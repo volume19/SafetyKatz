@@ -1,0 +1,60 @@
+[package]
+name = "safety_katz"
+version = "1.0.0"
+edition = "2021"
+license = "BSD-3-Clause"
+authors = ["Rust port for educational lab environments", "Original by @harmj0y"]
+description = "Educational tool for authorized security testing - LSASS dumping and PE loading (Rust port of SafetyKatz)"
+readme = "README_RUST.md"
+
+[dependencies]
+# Windows API bindings
+windows = { version = "0.54", features = [
+    "Win32_Foundation",
+    "Win32_System_Diagnostics_Debug",
+    "Win32_System_Memory",
+    "Win32_System_Threading",
+    "Win32_System_LibraryLoader",
+    "Win32_System_ProcessStatus",
+    "Win32_System_WindowsProgramming",
+    "Win32_Security",
+] }
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# CLI argument parsing
+clap = { version = "4.5", features = ["derive"] }
+
+# Binary parsing
+zerocopy = { version = "0.7", features = ["derive"] }
+byteorder = "1.5"
+
+# Compression
+flate2 = { version = "1.0", default-features = false, features = ["rust_backend"] }
+
+# Logging
+log = "0.4"
+env_logger = "0.11"
+
+# Utilities
+uuid = { version = "1.7", features = ["v4"] }
+chrono = "0.4"
+
+[dev-dependencies]
+# Additional test dependencies can be added here
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+
+[[bin]]
+name = "safety_katz"
+path = "src/main.rs"
+
+[lib]
+name = "safety_katz_lib"
+path = "src/lib.rs"
